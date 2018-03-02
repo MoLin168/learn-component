@@ -1,2 +1,2 @@
 # learn-component
-study more programming thought
+study more component thought
