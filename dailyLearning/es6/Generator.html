@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Generator:生成器</title>
+	<script>
+		//Generator函数是一个普通函数，有两个特征：
+		//1.function关键字和函数名之间有一个星号*，位置在中间就好;
+		//2.函数内部使用yield（产出）表达式；而且这个表达式yield必须在Generator函数中使用，在其他地方就会报错。
+		//3.Generator是分段执行的，yield表达式是暂停执行的标志，next是恢复执行
+		//举个栗子：
+		function * sayHi(){
+			yield 'say';
+			yield 'hi';
+			return 'ending';
+		};
+
+		let sh = sayHi();
+		//value属性表示当前的内部状态的值，是yield表达式后面那个表达式的值；done属性是一个布尔值，表示是否遍历结束；
+		console.log(sh.next());//{value: "say", done: false} 返回的是一个遍历器对象，代表Generator函数内部的指针
+		console.log(sh.next());//{value: "hi", done: false}
+		console.log(sh.next());//{value: "ending", done: true}
+		console.log(sh.next());//{value: undefined, done: true}
+
+		//yield表达式：
+		//1.yield表达式后面的表达式，只有当调用next方法、内部指针指向该语句时才会执行，雷同于“惰性求值”的功能
+		//2.yield表达式如果用在另一个表达式之中，必须放在圆括号里面;
+		//3.yield表达式用作函数参数或放在赋值表达式的右边，可以不加括号;
+		
+		let arr = [1,[2,[22,222]],[3,4]];
+		let arr2 = [];
+		let flat = function * (_arr){
+			for(let i = 0,len = _arr.length;i < len;i++){
+				let item = _arr[i];
+				if(typeof item != 'number'){//Array.isArray(item) 相同的判断是否是数组
+					yield* flat(item);//yield* 用来在一个 Generator 函数里面执行另一个 Generator 函数
+				}else{
+					yield item;
+				}
+			}
+		};
+
+		console.log('arr='+flat(JSON.stringify(arr)));
+		for(let f of flat(arr)){
+			arr2.push(f);
+			// console.log(f);
+		}
+		console.log('arr2='+arr2);
+		//与Iterator的关系：
+		let iteratorable = {};
+		iteratorable[Symbol.iterator] = function * a(){
+			yield 'hi';
+			yield 'hello';
+			yield 'nihao';
+			return 'ending';
+		};
+		console.log([...iteratorable]);
+
+		//Generator 函数执行后，返回一个遍历器对象。该对象本身也具有Symbol.iterator属性，执行后返回自身。
+		function * gen(){};
+		let aa = gen();
+		console.log(aa[Symbol.iterator]() === aa);
+
+		//next含有参数举例：
+		function * f(){
+			for(let i = 0;true;i++){
+				let item = yield i;
+				if(item){
+					i = -1;
+				}
+			}
+		};
+		let bb = f();
+		console.log(bb.next());//{value: 0, done: false}
+		console.log(bb.next());//{value: 1, done: false}
+		console.log(bb.next());//{value: 2, done: false}
+		console.log(bb.next(true));//{value: 0, done: false}
+
+		//栗子：
+		function * foo(x){
+			let y = 2 * (yield (x + 1));
+			let z = yield(y / 3);
+			return x + y + z;
+		};
+
+		let a = foo(5);
+		console.log(a.next());//{value: 6, done: false}
+		console.log(a.next(12));//{value: 8, done: false}
+		console.log(a.next(13));//{value: 42, done: true}
+
+		//for...of循环:一旦next方法的返回对象的done属性为true，for...of循环就会中止，且不包含该返回对象;
+		//栗子:斐波那契数列:1,2,3,5,8,13,21,34,55,89
+		var newArr = [];
+		function * fibonacci(){
+			let [prev,curr] = [0,1];
+			for(;;){
+				yield curr;
+				[prev,curr] = [curr,prev + curr];//解构赋值
+			}
+		}
+
+		for(let n of fibonacci()){
+			if(n > 100){break;}
+			newArr.push(n);
+		}
+		console.log('newArr='+newArr);
+		//for...of循环任意个对象object
+		function * objectEnteries(obj){
+			//Object.keys(obj):返回属性数组;
+			//Reflect.ownKeys(obj):返回所有属性key,包含方法属性
+			let propKeys = Reflect.ownKeys(obj);
+
+			for(let propKey of propKeys){
+				yield [propKey,obj[propKey]];
+			}
+		}
+
+		let obj = {fName:'jane',secondName:'zhou'};//任意个对象
+
+		for(let [key,value] of objectEnteries(obj)){
+			// console.log(key + ':' +value);//等价于
+			console.log(`${key}: ${value}`);
+		}
+
+		//遍历赋值的方式有很多，除了for...of外，还有解构赋值，扩展运算符，Array.from:
+		
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

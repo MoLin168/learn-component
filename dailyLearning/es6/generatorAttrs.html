@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>generator属性介绍:throw,return</title>
+	<script>
+		//generator的throw，抛除异常方法
+		let gen = function * (){
+			try{
+				yield;
+			}catch(e){
+				console.log('内部异常抛出='+e);
+			}
+			
+			//去掉内部的try...catch
+			// while(true){
+			// 	yield;
+			// 	console.log('内部捕获打印='+e);
+			// }
+		};
+		let g = gen();
+		g.next();//执行next才能使generator函数继续执行，不然只会到yield产出表达式。同时抛出异常的会报错（不先执行next）
+	
+		try{//只执行一次
+			g.throw('a');//是generator返回的遍历器对象下的throw方法
+			g.throw(new Error('error'));//throw方法可以接受参数
+		}catch(e){
+			console.log('外部异常抛出='+e);
+		}
+
+		//全局异常抛出命令throw和generator的异常抛出throw方法是无关联的，互不影响。
+		try{
+			throw new Error('全局异常命令抛出');//全局异常命令抛出
+		}catch(e){
+			console.log('全局外部异常抛出='+e);
+		}
+
+		//如果generator函数内部没有try...catch，那么throw出来的异常将被外部的捕获；	
+		//generator的throw方法被捕获后，会自动执行一次next方法；
+
+		//return方法：返回固定的值，并且终结generator函数
+		function * gener(){
+			yield 1;
+			yield 2;
+			yield 3;
+		}
+
+		let gg = gener();//gg就是generator返回的遍历器对象
+		console.log(gg.next());//{value: 1, done: false}
+		// console.log(gg.return('return'));//{value: "return", done: true}
+		console.log(gg.return());//{value: undefined, done: true}
+		console.log(gg.next());//{value: undefined, done: true}
+
+		//如果generator函数内部有try..finally代码块，且正在执行try代码块，那么return会推迟到执行完finally代码块之后再执行
+		function * numbers(){
+			yield 1;
+			try{
+				yield 2;
+				yield 3;
+			}finally{
+				yield 4;
+				yield 5;
+			}
+			yield 6;
+		};
+		let num = numbers();
+		console.log(num.next());//{value: 1, done: false}
+		console.log(num.next());//{value: 2, done: false}
+		console.log(num.return(9));//{value: 4, done: false}
+		console.log(num.next());//{value: 5, done: false}
+		console.log(num.next());//{value: 9, done: true}
+
+		//yield* 用来在一个 Generator 函数里面执行另一个 Generator 函数
+		function * genera(){
+			// yield* ['a','b','x'];//{value: "a", done: false} 返回数组的遍历器对象
+			yield ['a','b','x'];//{value: Array(3), done: false} 返回整个数组
+		};
+		console.log(genera().next());
+		//实际上，任何数据结构只要有 Iterator 接口，就可以被yield*遍历。
+		let read = (function* () {
+		  yield 'hello';
+		  yield* 'hello';
+		})();
+
+		console.log(read.next().value); // "hello"
+		console.log(read.next().value); // "h"	
+
+		//含有return语句的generator函数,会return出该值，不影响遍历
+		function * aa(){
+			yield 1;
+			yield 2;
+			return 'output';
+		};
+
+		function * bb(genObj){
+			let result = yield* genObj;
+			console.log(result);
+		};
+
+		let ad = [...bb(aa())];//[...bb(aa())]//output
+		console.log(ad);//[1,2]
+
+		//作为对象属性的generator函数
+		let obj = {
+		  * myGeneratorMethod() {//是一个generator函数
+		    //···
+		  }
+		};//等价于
+		let obj2 = {
+		  myGeneratorMethod: function* () {
+		    // ···
+		  }
+		};
+
+		//generator函数的this
+		function * aGen(){
+			this.a = 1;
+			yield this.b = 2;
+			yield this.c = 3;
+		};
+
+		function F(){
+			return aGen.call(aGen.prototype);
+		};
+
+		let f = new F();
+
+		console.log(f.next());
+		console.log(f.next());
+		console.log(f.next());
+
+		console.log(f.a);
+		console.log(f.b);
+		console.log(f.c);
+
+		//异常
+		function * testA(){
+			this.a = 11;
+		}
+		let testObj = testA();
+		testObj.next();
+		console.log(testObj.a);//undefined
+
+		//异常
+		function* FF() {
+		  yield this.x = 2;
+		  yield this.y = 3;
+		}
+
+		//console.log(new FF());//FF is not a constructor 不是一个结构函数
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>存储</title>
+	<script>
+		//不管是localStorage还是sessionStorage，对于数据的操作是一样的，但是前者存储没有时间的限制，后者会在浏览器关闭之后自动清除；
+		/*
+		保存：localStorage.setItem(key,value);
+		读取: localStorage.getItem(key);
+		删除单个数据：localStorage.removeItem(key);
+		清除数据:localStorage.clear();
+		得到某个索引的key:localStorage.key(index);
+		 */
+		//cookie的存取范例:存储大小最多不超过4k，超过时间失效
+		//注意:要用apache服务器打开，不然Cookie为空:原因是Cookie由服务器端生成，发送给客户端。
+		function Cookie(){};
+		Cookie.prototype.set = function(name,value){
+			let time = new Date();
+			time.setTime(time.getTime()+3*30*24*3600*1000);//3个月*天数*小时*秒*1000（转化为ms）
+			document.cookie = name + '=' + value + ';expires=' + time.toGMTString()+";path=/";
+		};
+		Cookie.prototype.get = function(_key){
+			let cookieStr = document.cookie;
+			//console.log('cookieStr='+cookieStr);
+			return this.oriGet(cookieStr,_key);
+			//1.正则写法
+			try{
+				if (new RegExp('.*\\b' + _key + '\\b(\\s*=([^&;]+)).*', 'gi').test(cookieStr)) {
+	                return unescape(RegExp.$2);
+	            } else {
+	                return '';
+	            }
+        	}catch(_error){
+        		//2.原生写法
+        		this.oriGet(cookieStr,_key);
+        	}
+		};
+		Cookie.prototype.oriGet = function(_cookieStr,_key){
+			let str = _cookieStr;
+			if(str.length > 0 && str.indexOf(_key) != -1){
+				let arr = str.split(';');
+				for(let i = 0,len = arr.length;i < len;i++){
+					//(function(_arr){//闭包,不然只返回第一个的值
+						let arrValue = arr[i].split('=');
+						//alert(i);//执行三次为0的输出，因为连续执行了三次for循环，每次准备开始当次for循环，外部又开始执行for循环，导致每次只能执行当次循环的第一次循环便开始外部第二次的for循环。
+						if(arrValue[0] == _key){
+							//alert(arrValue[1]);
+							return arrValue[1];
+						}else{
+							return '';
+						}
+					//})(arr[i]);
+				}
+			}
+		};
+		//测试下
+		let cookie = new Cookie();
+		cookie.set('aaaa','cookie set success');
+		//cookie.set('aaaa1','cookie1 set success');
+		//cookie.set('aaaa2','cookie2 set success');
+		console.log("cookie="+cookie.get('aaaa'));
+		//console.log("cookie1="+cookie.get('aaaa1'));
+		//console.log("cookie2="+cookie.get('aaaa2'));
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

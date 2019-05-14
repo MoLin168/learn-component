@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>input 新增元素</title>
+</head>
+<body>
+	<!--datalist元素--><!--要想正常提交，则需要通过本地服务器来运行该input文件，因为表单提交到了php文件中-->
+	<form action="php/demo.php" method="get">
+		<input list="browsers" name="browser">
+		<datalist id="browsers">
+			<option value="IE"></option>
+			<option value="Chrome"></option>
+			<option value="safari"></option>
+			<option value="Firefox"></option>
+			<option value="Opera"></option>
+		</datalist>
+		<input type="submit">
+	</form>
+	<br><br>
+	<!--keygen元素-->
+	<form action="php/demo.php" method="get">
+		用户名:<input type="text" name="user_name">
+		加密:<keygen name="security">
+		<input type="submit">
+	</form>
+
+	<br><br>
+	<!--output:元素用于不同类型的输出，比如计算或脚本输出-->
+	<form oninput="x.value = parseInt(a.value) + parseInt(b.value)">0
+		<input type="range" id="a" value="50">100
+		+<input type="number" id="b" value="50">
+		=<output name="x" for="a b"></output>
+	</form>
+</body>
+</html>

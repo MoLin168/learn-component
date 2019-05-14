@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+		//解构赋值
+		//ES6 允许按照一定模式，从数组和对象中提取值，对变量进行赋值，这被称为解构（Destructuring）
+		function init(){
+			function *fibs() {//fibs此时是一个生成器（generator）
+			  let a = 0;
+			  let b = 1;
+			  while (true) {
+			   yield a;//yield是ES6的新关键字
+			    [a, b] = [b, a + b];
+			  }
+			}
+			let [first, second, third, fourth, fifth, sixth] = fibs();
+			console.log('first='+first+',second='+second+',third='+third+',fourth='+fourth+',fifth='+fifth+',sixth='+sixth);
+
+			function f() {
+			  //console.log('aaa');
+				return 'a';
+			}
+
+			let [y = undefined] = [f()];
+			let x;
+			if ([1][0] === undefined) {//es6内部严格使用全等符号（===）
+			  x = f();
+			} else {
+			  x = [1][0];
+			}
+			console.log('x='+x+',[1][0]='+[1][0]+',y='+y);//x = 1,[1][0] = 1
+
+			//默认值生效的条件是，对象的属性值严格等于undefined。
+			var {x = 3} = {x: undefined};
+			//x // 3
+			var {x = 3} = {x: null};
+			//x // null
+		}
+	</script>
+</head>
+<body onload="init()">
+	
+</body>
+</html>

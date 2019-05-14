@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="page-view-size" content="1920*1080">
+	<title>audio play</title>
+</head>
+<body>
+	<!--
+	controls autoplay 自动播放
+	controls loop 循环播放
+	controls muted 静音
+	controls preload 有none,metadata,auto三个值
+	-->
+	<!-- <audio src="source/horse.ogg" controls="controls">不支持audio标签</audio> --><!--等同于下面的写法-->
+	<audio controls>
+		<source src="source/horse.ogg">
+	</audio>
+</body>
+<script>
+	//介绍下：play,pause,timeupdate,currentTime,seeking,seeked
+	let audio = document.getElementsByTagName('audio')[0];	
+
+	// audio.onplay = () => console.log('start play');
+	// audio.onpause = () => console.log('pause play');
+
+	//等价于
+	audio.addEventListener('play',() => {
+		console.log('start play');
+	});
+	audio.addEventListener('pause',() => {
+		console.log('pause play');
+	});
+	audio.addEventListener('seeking',() => {//开始拖动进度条时触发
+		console.log('seeking play');
+	});
+	audio.addEventListener('seeked',() => {//拖动进度条停止后触发
+		console.log('seeked play');
+	});
+	audio.addEventListener('timeupdate',() => {
+		console.log(audio.currentTime);//打印出当前播放时间位置
+	});
+</script>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>WeakSet</title>
+	<script>
+		//1.WeakSet 结构与 Set 类似，也是不重复值的集合。WeakSet的成员只能是对象，而不能是其他的类型值;
+		//2.WeakSet 中的对象都是弱引用,即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于 WeakSet 之中;
+		//3.WeakSet 不能遍历，是因为成员都是弱引用，随时可能消失，遍历机制无法保证成员的存在，很可能刚刚遍历结束，成员就取不到了；是上述2的延伸
+		
+		const a = [[1,3],[2,5]];//a必须是具有Iterable接口的对象,如果传参数为const a = [1,3];那么就会报错Invalid value used in weak set(…)
+		const ws = new WeakSet(a);
+		console.log(ws);
+		const c = {};
+		ws.add(c);
+		console.log(ws.has(c));
+		ws.delete(c);
+		console.log(ws.has(c));
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

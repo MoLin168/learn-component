@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>form attributes</title>
+</head>
+<body>
+	<!--form表单的属性target可以取值为：
+		_blank：重新打开一个页面;
+		_self:默认值，在相同的页面打开;
+		_parent:在父框架集中打开;
+		_top:在整个窗口中打开;
+		framename:在指定的框架中打开;
+	-->
+	<!--autocomplete 自动填充输入框数据-->
+	<form action="php/demo.php" autocomplete="on">
+		用户名：<input type="text" name="user_name"><br>
+		密码：<input type="text" name="password"><br>
+		E-mail：<input type="email" name="email" autocomplete="off"><br>
+		<input type="submit">
+	</form>
+
+	<!--novalidate 在提交表单时不去验证form或input域-->
+	<br>
+	<form action="php/demo.php" novalidate>
+		邮箱:<input type="email" name="email">
+		<input type="submit">
+	</form>
+</body>
+</html>

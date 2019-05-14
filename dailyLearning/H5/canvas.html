@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas</title>
+</head>
+<body>
+	<canvas id="testCanvas">你的浏览器不支持canvas</canvas>
+	<canvas id="testCanvas2">你的浏览器不支持canvas</canvas>
+	<canvas id="testCanvas3" style="position: absolute;top:200px;left:10px;width:400px;height: 300px;">你的浏览器不支持canvas</canvas>
+	<canvas id="testCanvas4" style="position: absolute;top:300px;left:10px;width:400px;height: 300px;">你的浏览器不支持canvas</canvas>
+</body>
+<script>
+	const ele = document.getElementById('testCanvas');
+	const ctx = ele.getContext('2d');//3D用webgl
+	//1.绘制图形
+	ctx.clearRect(0, 0, 200, 200);//先清除
+	ctx.fillStyle = '#ddd';
+	ctx.fillRect(10,10,130,130);//绘制了一个背景为ddd的画布 fillRect(x,y,width,height)
+
+	//1.绘制一条斜线
+	ctx.moveTo(200,0);//线条开始坐标
+	ctx.lineTo(400,400);//线条结束坐标
+	ctx.stroke(); 
+
+	//利用Path来绘制笑脸
+	let path = new Path2D();
+	//Math.PI = 3.14 = 180°  先画一个圆
+	path.arc(75, 75, 50, 0, Math.PI*2, true);
+	
+	path.moveTo(110,75);
+	path.arc(75, 75, 35, 0, Math.PI, false);//画一个底部半圆
+
+	//加两个小圆
+	path.moveTo(65, 65);
+	path.arc(60, 65, 5, 0, Math.PI*2, true);
+	path.moveTo(95, 65);
+	path.arc(90, 65, 5, 0, Math.PI*2, true);
+
+	ctx.strokeStyle = 'blue';
+	ctx.stroke(path);
+
+	//2.绘制文本
+	const ele2 = document.getElementById('testCanvas2');
+	const ctx2 = ele2.getContext('2d');
+	console.log(ctx2);
+	ctx2.shadowOffsetX = 2;
+	ctx2.shadowOffsetY = 2;
+	ctx2.shadowBlur = 2;
+	ctx2.shadowColor = '#666666';
+	ctx2.font = '24px Arial';
+	ctx2.fillStyle = '#333333';
+	ctx2.textAlign = '#333333';
+	ctx2.fillText('绘制实心的文本',60,40);//fillText是绘制实心的文本
+	ctx2.strokeText('绘制空心的文本',60,100);//strokeText是绘制空心的文本
+
+	//3.渐变:createLinearGradient(x,y,x1,y1) - 创建线条渐变;
+	//
+	//createRadialGradient(x,y,r,x1,y1,r1) - 创建一个径向/圆渐变 
+	/**x：表示渐变的开始圆的 x 坐标
+ 	y：表示渐变的开始圆的 y 坐标
+ 	r：表示开始圆的半径
+ 	x1：表示渐变的结束圆的 x 坐标
+ 	y1：表示渐变的结束圆的 y 坐标
+ 	r1：表示结束圆的半径**/
+	const myCanvas = document.getElementById('testCanvas3');
+	const myCanvas2 = document.getElementById('testCanvas4');
+	const ctx3 = myCanvas.getContext('2d');
+	const ctx4 = myCanvas2.getContext('2d');
+	const grd = ctx3.createLinearGradient(10,200,200,0);
+	const grd2 = ctx4.createRadialGradient(75,50,5,90,60,100);
+	grd.addColorStop(0,"red"); 
+	grd2.addColorStop(0,"blue"); 
+	grd.addColorStop(1,"white"); 
+	grd2.addColorStop(1,"white"); 
+	ctx3.fillStyle = grd; 
+	ctx4.fillStyle = grd2; 
+	ctx3.fillRect(10,10,150,40);
+	ctx4.fillRect(10,10,250,40);
+</script>
+</html>

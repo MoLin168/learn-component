@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>video play</title>
+</head>
+<body>
+	<!--controls属性规定浏览器应该为视频提供播放控件-->
+	<!--controls loop代表视频结束之后循环播放;
+		controls autoplay代表自动播放，但是直接测试貌似不行,是因为浏览器默认设置不去自动播放，需要设置chrome://flags/#autoplay-policy 为 No user gesture is required，重启浏览器再次打开就好;
+		controls muted 设置播放为静音;
+		controls poster 未播放前，设置预览图片;例如：poster="../es6/images/fafa.jpg"；
+		!!注意：controls preload 表示在完成页面加载之后，载入视频：可以选择none,metadata,auto三个值;所有主流浏览器都不支持 preload 属性,除了IE；
+	-->
+	<video controls poster="../es6/images/fafa.jpg" >
+		<source src="source/movie.mp4">
+		浏览器不支持video标签
+	</video>
+</body>
+<script>
+	//介绍下：play,pause,timeupdate,currentTime,seeking,seeked
+	let video = document.getElementsByTagName('video')[0];
+	
+	// video.onplay = () => {
+	// 	console.log('start play');
+	// };
+	video.addEventListener('play',() => {
+		console.log('start play');
+	});
+	video.addEventListener('pause',() => {
+		console.log('pause play');
+	});
+	video.addEventListener('seeking',() => {//开始拖动进度条时触发
+		console.log('seeking play');
+	});
+	video.addEventListener('seeked',() => {//拖动进度条停止后触发
+		console.log('seeked play');
+	});
+	video.addEventListener('timeupdate',() => {
+		console.log(video.currentTime);
+	});
+</script>
+</html>

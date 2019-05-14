@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Promise: for example</title>
+	<script>
+		//主要纪录些Promise的例子
+		//1.Promise转化之后就变成异步了，如果需要同步的操作，需要Promise.resolve().then()处理下，但是这样会在本轮函数结尾处执行；
+		//保证同步函数同步执行，异步函数异步执行：1.async函数；2.new Promise()
+		//1.async函数
+		const f = () => console.log('now');
+		(async() => f())();//f函数是同步的，所以是同步的执行
+		console.log('next');
+		//如果f是异步的，第二句这样写：(async() => f())().then(),捕获异常的话:(async() => f())().catch;写成链式的话：
+		//(async() => f())().then().catch();
+		//2.new Promise()
+		const f2 = () => console.log('f2');
+		(() => new Promise(resolve => resolve(f())))();
+		console.log('f2 next');
+
+		//上面的写法其实可以用Promise.try()来替换，不过现在还是一个提案！
+		// const f3 = () => console.log('f3 now');
+		// Promise.try(f3);//Promise.try is not a function
+		// console.log('f3 next');
+	</script>
+</head>
+<body>
+</body>
+</html>

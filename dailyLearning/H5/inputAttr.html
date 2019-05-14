@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>input attributes</title>
+</head>
+<body>
+	<!--autofocus 自动获取输入框焦点-->
+	用户：<input type="text" name="user_name" autofocus><br>
+	密码：<input type="text" name="password"><br>
+	<input type="submit">
+	
+	<!--form属性:-->
+	<br><br>
+	<form action="php/demo.php" id="form1">
+		用户名：<input type="text" name="user_name"><br>
+		<input type="submit" value="submit">
+	</form>
+	密码：<input type="text" name="password" form="form1">
+
+	<!--formaction属性：会覆盖掉form中的action指向的文件地址,能用在input的type为submit和image时-->
+	<!--在input(仅限type为submit或者image配合使用)加上以(form+...的属性)就是去覆盖form表单中的属性,再比如：formmethod-->
+	<br><br>
+	<form action="php/demo.php">
+		用户名：<input type="text" name="user_name"><br>
+		密码：<input type="text" name="password"><br>
+		<input type="submit"><br>
+		<input type="submit" value="管理员提交" formaction="php/adminDemo.php">
+	</form>
+	
+	<br><br>
+	<!--multiple属性：规定input元素可以选择多个值 比如上传多个，type为file时，还有type为email时-->
+	<form action="php/demo.php">
+		<input type="file" name="img" multiple>
+		<input type="submit">
+	</form>
+
+	<!--pattern属性：检测正则表达式-->
+	<br><br>
+	<form action="php/demo.php">
+		 Country code:<input type="text" name="user_name" pattern="[A-Za-z]{3}" title="three letter country code"><br>
+		<input type="submit">
+	</form>
+
+	<!--placeholder属性:提示输入信息-->
+	<!--required属性：输入框不能为空的提示-->
+	<br><br>
+	<form action="php/demo.php">
+		<input type="text" name="user_name" placeholder="fill your name" required><br>
+		<input type="text" name="password" placeholder="fill your password" required><br>
+		<input type="submit">
+	</form>
+
+</body>
+</html>

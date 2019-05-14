@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>正则修饰符</title>
+	<script>
+		//1.u修饰符，含义为“Unicode”模式，用来处理大于\uFFFF的Unicode字符。
+		//2.y修饰符，含义粘连模式，与g修饰符的作用类似，也局是全匹配。g修饰符只要剩余位置中存在匹配就可，而y修饰符确保匹配必须从剩余的第一个位置开始。
+		var s = 'aaa_aa_a';
+		var r1 = /a+/g;
+		var r2 = /a+/y;
+
+		r1.exec(s) // ["aaa"]
+		r2.exec(s) // ["aaa"]
+
+		r1.exec(s) // ["aa"]
+		r2.exec(s) // null
+
+		const REGEX = /a/gy;
+		'aaxa'.replace(REGEX, '-') // '--xa'//最后一个a因为不是出现在下一次匹配的头部，所以不会被替换。
+		//3.s修饰符，使得.可以匹配任意单个字符，这被称为dotAll模式。
+		const re = /foo.bar/s;
+		// 另一种写法
+		// const re = new RegExp('foo.bar', 's');
+		re.test('foo\nbar') // true
+		re.dotAll // true
+		re.flags // 's'
+		//4.后行断言(es6):x只有在y后面才匹配，必须写成/(?<=y)x/
+		/*es5：先行断言，x只有在y前面才匹配，必须写成/x(?=y)/
+			   先行否定断言,x只有不在y前面才匹配，必须写成/x(?!y)/
+		*/
+		//5.后行否定断言(es6):x只有不在y后面才匹配，必须写成/(?<!y)x/
+		//6.具名组匹配
+		//es5写法
+		const RE_DATE = /(\d{4})-(\d{2})-(\d{2})/;
+		const matchObj = RE_DATE.exec('1999-12-31');
+		const year = matchObj[1]; // 1999
+		const month = matchObj[2]; // 12
+		const day = matchObj[3]; // 31
+		
+		//es6 添加了键名
+		const RE_DATE = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/;
+		const matchObj = RE_DATE.exec('1999-12-31');
+		const year = matchObj.groups.year; // 1999
+		const month = matchObj.groups.month; // 12
+		const day = matchObj.groups.day; // 31
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

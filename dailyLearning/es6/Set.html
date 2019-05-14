@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>es6 Set</title>
+	<script>
+		//特点：1.成员的值是唯一的；2.Set函数可以接受一个数组（或者具有 iterable 接口的其他数据结构）作为参数，用来初始化；3.在Set内部，NaN是相等的，对象是不相等的；
+		let set = new Set();
+		let a = NaN;
+		let b = NaN;
+		set.add(a);
+		set.add(b);
+		console.log(set) // Set {NaN}
+
+		let set2 = new Set();
+		set2.add({});
+		set2.size // 1
+
+		set2.add({});
+		console.log(set2.size); // 2
+		//2.Set实例操作方法：(4个)
+		//add(value):添加某个值，返回Set结构本身;
+		//delete(value):删除某个值，返回一个boolean值，代表是否成功
+		//has(value):返回一个boolean值，表示该值是否为Set成员
+		//clear():清除所有成员，没有返回值
+		//3.去除数组重复的元素方式----利用Set成员唯一性的原理
+		let bb = [12,23,3,3,33,3321,12,23];
+		console.log(Array.from(new Set(bb)));
+		//4.Set遍历方法：（4个）
+		//keys():返回键名的遍历器
+		//values():返回键值的遍历器
+		//entries():返回键值对的遍历器
+		//forEach():使用回调函数遍历每个成员
+		
+		//由于 Set 结构没有键名，只有键值（或者说键名和键值是同一个值）,所以keys方法和values方法的行为完全一致。
+		let ddd = new Set(['hh','sda','dasd']);
+		for(let item of ddd.keys()){
+			console.log("keys()----"+item);
+		}
+
+		for(let item of ddd.values()){
+			console.log("values()----"+item);
+		}
+
+		for(let [item,value] of ddd.entries()){
+			console.log("entries()----item="+item+",value="+value);
+		}
+
+		//默认遍历器生成函数就是它的values方法,Set是可遍历的iterable
+		console.log(Set.prototype[Symbol.iterator] === Set.prototype.values);
+		//说明可以直接执行for..of...遍历Set实例
+		for(let item of ddd){
+			console.log("iterator----item="+item);
+		}
+
+		//forEach() 箭头函数() => {...}
+		ddd.forEach((key,value) => {
+			console.log("forEach----key="+key+",value="+value);
+		});
+
+		//扩展运算符用于Set数据结构,因为扩展运算符（...）内部使用for...of循环
+		let arrFor = new Set(['red', 'green', 'blue']);
+		let arr = [...arrFor];
+		console.log("扩展运算符="+arr);
+
+		//arr的map
+		let set44 = new Set([1, 2, 3]);
+		let add = [...set44].map(x => x * 2);
+		set44 = new Set([...set44].map(x => x * 2));
+		let addf = [...set44];
+		console.log("set44="+set44+",add="+add+",addf="+addf);// 返回Set结构：{2, 4, 6}
+		
+		//arr的filter
+		let sset = new Set([1, 2, 3, 4, 5]);
+		sset = new Set([...sset].filter(x => (x % 2) == 0));
+		console.log("filter----sset="+sset+",for..of="+[...sset]);
+
+		//Set实现并集、交集、差集
+		let aaa = new Set([1,2,34,5]);
+		let bbb = new Set([1,34,5,22,3]);
+
+		let union = new Set([...aaa,...bbb]);
+		let intersect = new Set([...aaa].filter(x => bbb.has(x)));
+		let difference = new Set([...aaa].filter(x => !bbb.has(x)));
+		console.log("union="+[...union]+",intersect="+[...intersect]+",difference="+[...difference]);
+
+		
+	</script>
+</head>
+<body>	
+	
+</body>
+</html>

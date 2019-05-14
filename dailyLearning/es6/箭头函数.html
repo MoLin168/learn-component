@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>箭头函数</title>
+	<script>
+		//1.介绍：箭头函数是一种简单fn的写法，在es6上开始使用，其特点有:不绑定this和arguments;代码简单;
+		//2.简单概括：
+		// function(){
+		// 	console.log('hello');
+		// }
+		// 简化写法为 () => console.log('hello');
+		//3.说下其特点：范例1
+		function Person () {
+		  this.name = 'little bear',
+		  this.age = 18
+		  this.out = () => {
+		  		console.log('我叫' + this.name + '我今年' + this.age + '岁')
+			}
+		}
+		let p = new Person();
+		p.out();
+		//范例2
+		let funcTest = (...argu) => console.log("argu="+argu);
+		funcTest(1,32);
+		//4.不能使用箭头函数的情况：参考，https://zhuanlan.zhihu.com/p/26540168
+		//1).定义字面量方法
+		const calculator = {
+		    array: [1, 2, 3],
+		    sum: () => {
+		        console.log(this === window); // => true
+		        return this.array.reduce((result, item) => result + item);
+		    }
+		};
+		console.log(this === window); // => true
+		//calculator.sum();// Throws "TypeError: Cannot read property 'reduce' of undefined"
+		//调用 calculator.sum 的时候，执行上下文里面的 this 仍然指向的是 window，原因是箭头函数把函数上下文绑定到了 window 上
+		//2).定义原型方法
+		function Cat(name) {
+		    this.name = name;
+		}
+
+		Cat.prototype.sayCatName = () => {
+		    console.log(this === window); // => true
+		    return this.name;//当使用箭头函数时，此时调用这个方法，this已经被指向为window对象了，而不是new出来的实例
+		};
+		const cat = new Cat('Mew');
+		cat.sayCatName(); // => undefined
+		//3)定义事件函数回调
+		// var button = document.getElementById('myButton');
+		// button.addEventListener('click', () => {
+		//     console.log(this === window); // => true
+		//     this.innerHTML = 'Clicked button';
+		// });//此时的this指向的是window，因为箭头函数
+		//4)定义构造函数
+		const Message = (text) => {
+		    this.text = text;
+		};
+		const helloMessage = new Message('Hello World!');//// Throws "TypeError: Message is not a constructor"
+	</script>
+</head>
+<body>
+	<div id="myButton" style="width: 200px;height:200px;border:1px solid red;position: relative;top:0px;left:0px;"></div>
+</body>
+</html>

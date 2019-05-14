@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>WeakMap</title>
+</head>
+<body>
+	<div id="mapDiv" style="width: 200px;height:200px;background: #000000;position: absolute;left:0px;top:0px;"></div>
+</body>
+<script>
+	//WeakMap与Map的区别有以下几点：
+	//1.WeakMap只接受除null外的对象作为键名，不接受其他类型的；
+	//2.WeakMap的键名所指向的对象，不计入垃圾回收机制，避免内存泄漏；当该 DOM 元素被清除，其所对应的WeakMap记录就会自动被移除
+	const wp = new WeakMap();
+	const ele = document.getElementById('mapDiv');//先加载dom，不然获取不到，或者放到onload中去执行
+	wp.set(ele,'add some information');
+	console.log(wp.get(ele));
+	let key = {a:1},
+		value = {};
+	wp.set(key,value);
+	value = null;
+	console.log('one='+wp.get(key));//3.注意的是：WeakMap 弱引用的只是键名，而不是键值。键值依然是正常引用
+	wp.set(key,value);
+	console.log('two='+wp.get(key));
+
+	//WeakMap由于不计入回收机制，所以没有.keys(),.values()，.entries(),.size,.forEach,.clear的方法，只有.set(),.get(),.delete(),.has()方法；
+	//WeakMap 应用的典型场合：
+	//1.DOM 节点作为键名;2.部署私有属性;
+</script>
+</html>

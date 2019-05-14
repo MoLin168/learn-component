@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>drop 拖放</title>
+	<style>
+		#div1, #div2
+		{float:left; width:100px; height:35px; margin:10px;padding:10px;border:1px solid #aaaaaa;}
+	</style>
+	<script>
+		function allowDrop(ev) 
+		{ 
+		ev.preventDefault(); //浏览器对数据的默认处理
+		} 
+
+		function drag(ev) 
+		{ 
+		ev.dataTransfer.setData("Text",ev.target.id);//dataTransfer.setData 设置被拖数据的数据类型和值
+		} 
+
+		function drop(ev) 
+		{ 
+		ev.preventDefault(); //浏览器对数据的默认处理
+		let data = ev.dataTransfer.getData("Text"); 
+		ev.target.appendChild(document.getElementById(data)); 
+		} 
+
+		//draggable:属性设置是为了使元素可拖动;
+		//ondragover:规定在何处放置被拖动的数据;
+		//ondragstart:drag(event),规定了被拖动的数据;
+	</script>
+</head>
+<body>
+	<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div> 
+	<img id="drag1" src="php/images/fafa.jpg" draggable="true" ondragstart="drag(event)" width="90" height="29"> 
+	<div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+</body>
+</html>

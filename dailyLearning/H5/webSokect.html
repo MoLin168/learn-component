@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>webSocket</title>
+	<script>
+		//webSocket:单个TCP连接上进行全双工通讯的协议;在WebSocket API中，浏览器和服务器只需要做一个握手的动作，然后，浏览器和服务器之间就形成了一条快速通道。两者之间就直接可以数据互相传送;
+		//做一个简单的socket流程的介绍
+		/**
+		 * 1.创建webSocket实例:let ws = new WebSocket(url,portocal);//"ws://localhost:9998/echo"；
+		 * 2.onopen socket连接后触发，判断其readyState为1时代表连接成功，可以通信；
+		 * 3.可以通信后，就能向服务器send数据，并且通过onmessage来获取服务器数据；
+		 * 4.onerror,通信发生错误时，开始触发；
+		 * 5.onclose，连接关闭时触发；
+		 */
+		(function WebSocket(){
+			let ws = new WebSocket('ws:localhost:80');
+
+			ws.onopen = () => {
+				if(ws.readyState == 1){//代表可以进行通信,socket已经连接成功
+					ws.send('start send');
+				}
+			};
+
+			ws.onmessage = () => {
+				//处理服务器返回给客户端的信息
+			};
+
+			ws.onerror = () => {
+				//通信连接异常处理
+			};
+
+			ws.onclose = () => {
+				//关闭socket时触发
+			};
+
+		})();
+	</script>
+</head>
+<body>
+	
+</body>
+</html>
